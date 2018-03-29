@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Problem } from '../../models/problem.model';
+import { DataService } from '../../service/data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-problem-detail',
@@ -6,10 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./problem-detail.component.css']
 })
 export class ProblemDetailComponent implements OnInit {
+  problem: Problem;
 
-  constructor() { }
+  constructor(private dataService: DataService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params =>{
+      this.problem = this.dataService.getProblem(+params['id']);
+    })
   }
 
 }
