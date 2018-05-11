@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms'
 import { AppComponent } from './app.component';
@@ -20,7 +21,8 @@ import { NewProblemComponent } from './components/new-problem/new-problem.compon
   imports: [
     BrowserModule,
     routing,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
   ],
   providers: [
     DataService
