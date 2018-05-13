@@ -85,6 +85,7 @@ var problem_detail_component_1 = __webpack_require__("./src/app/components/probl
 var app_routes_1 = __webpack_require__("./src/app/app.routes.ts");
 var new_problem_component_1 = __webpack_require__("./src/app/components/new-problem/new-problem.component.ts");
 var editor_component_1 = __webpack_require__("./src/app/components/editor/editor.component.ts");
+var collaboration_service_1 = __webpack_require__("./src/app/service/collaboration.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -104,7 +105,8 @@ var AppModule = /** @class */ (function () {
                 http_1.HttpClientModule,
             ],
             providers: [
-                data_service_1.DataService
+                data_service_1.DataService,
+                collaboration_service_1.CollaborationService
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -179,8 +181,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var collaboration_service_1 = __webpack_require__("./src/app/service/collaboration.service.ts");
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent() {
+    //inject CollaborationService
+    function EditorComponent(collaboration) {
+        this.collaboration = collaboration;
         this.languages = ['Java', 'Python'];
         this.language = 'Java';
         this.defaultContent = {
@@ -189,6 +194,8 @@ var EditorComponent = /** @class */ (function () {
         };
     }
     EditorComponent.prototype.ngOnInit = function () {
+        //init collaboration service
+        this.collaboration.init();
         //"editor" is the id in html
         this.editor = ace.edit("editor");
         this.editor.setTheme("ace/theme/eclipse");
@@ -214,7 +221,7 @@ var EditorComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/components/editor/editor.component.html"),
             styles: [__webpack_require__("./src/app/components/editor/editor.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [collaboration_service_1.CollaborationService])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -402,6 +409,42 @@ var ProblemListComponent = /** @class */ (function () {
     return ProblemListComponent;
 }());
 exports.ProblemListComponent = ProblemListComponent;
+
+
+/***/ }),
+
+/***/ "./src/app/service/collaboration.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var CollaborationService = /** @class */ (function () {
+    function CollaborationService() {
+    }
+    CollaborationService.prototype.init = function () {
+        this.collaborationSocket = io(window.location.origin, { query: 'message=haha' });
+        this.collaborationSocket.on("message", function (message) {
+            console.log('message received from the server: ' + message);
+        });
+    };
+    CollaborationService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], CollaborationService);
+    return CollaborationService;
+}());
+exports.CollaborationService = CollaborationService;
 
 
 /***/ }),

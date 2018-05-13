@@ -10,6 +10,7 @@ import { ProblemDetailComponent } from './components/problem-detail/problem-deta
 import { routing } from './app.routes';
 import { NewProblemComponent } from './components/new-problem/new-problem.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { CollaborationService } from './service/collaboration.service';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { EditorComponent } from './components/editor/editor.component';
     HttpClientModule,
   ],
   providers: [
-    DataService
+    DataService,
+    CollaborationService
   ],
   bootstrap: [AppComponent]
 })
